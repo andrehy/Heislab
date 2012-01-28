@@ -1,0 +1,41 @@
+Tilstandar:
+- på vei opp
+- på vei ned
+- i ein etasje
+- nødstopp: PIN for å starte t.d. 1234.
+
+enum tilstand = {MOVE, AT_FLOOR, EMERGENCY};
+
+struct Order {
+  int order;
+  int orderType; // 2==internal order (top priority), 1==up, -1==down
+};
+
+struct OrderList {
+  Order *head;
+  Order *next;
+}
+
+
+switch (tilstand) {
+  case MOVE:
+  
+  
+  case I_ETASJE:
+  // do something
+  break; 
+  case default:
+}
+
+Signal get:
+- etasjeindikator
+- obstruksjon
+- eksterne knapper
+- interne knapper
+- stop
+
+
+Signal get:
+- eksterne etasjelys
+- interne etasjelys
+- dørlys
