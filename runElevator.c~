@@ -1,0 +1,46 @@
+// This is the main loop
+
+#include "elev.h"
+#include <stdio.h>
+
+void heisann_init();
+
+void runElevator(){
+
+  //elev_set_speed(0);
+  heisann_init();
+
+    /* while (1) { */
+    /*     // Check if ground floor, if so, turn upwards. */
+    /*     if (elev_get_floor_sensor_signal() == 0) */
+    /*         elev_set_speed(100); */
+
+    /*     // Check if upper floor, if so, turn downwards. */
+    /*     else if (elev_get_floor_sensor_signal() == N_FLOORS-1) */
+    /*         elev_set_speed(-300); */
+
+    /*     // Check if stop button, if so, stop elevator and exit program. */
+    /*     if (elev_get_stop_signal()) { */
+    /*         elev_set_speed(0); */
+    /*         break; */
+    /*     } */
+    /* } */
+
+  while(1){
+    if (elev_get_stop_signal()) {
+      elev_set_speed(0);
+      break;
+    }
+  }
+} // End runElevator()
+
+
+void heisann_init(){
+  //getSignals();
+  
+  elev_set_speed(-300);
+  while (elev_get_floor_sensor_signal() != 0)
+    // DO NOTHING
+    ;
+  elev_set_speed(0);
+}
