@@ -17,10 +17,9 @@ void run_elevator(){
   elev_first_init();
   
   // Elevator is now at some floor.
-  int a=1;
   while(1){
     //break; // ** EXIT AT ONCE ** (Comment out to disable)
-    state_machine(&a);
+    current_state = (enum) state_machine((int) current_state); // TO DO: Fix this. This is not pretty... Possible fix: move current_state to the header file.
     if (elev_get_stop_signal()) {
       elev_set_speed(0);
       break;
@@ -29,9 +28,9 @@ void run_elevator(){
 }
 
 
-void elev_first_init(){  
-  elev_set_speed(300);
-  current_state = UP;
+void initialize_elevator(){  
+  elev_set_speed(-300);
+  current_state = DOWN;
   while (elev_get_floor_sensor_signal() == -1)
     // WAIT UNTIL FIRST FLOOR IS REACHED
     ;
