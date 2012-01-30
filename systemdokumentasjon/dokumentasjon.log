@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2011.9.9)  27 JAN 2012 11:41
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2011.9.9)  30 JAN 2012 14:21
 entering extended mode
  %&-line parsing enabled.
 **\nonstopmode\input dokumentasjon.tex
@@ -420,7 +420,7 @@ t/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1095.600pk> </home/student/.texmf-
 var/fonts/pk/ljfour/jknappen/ec/ecrm1440.600pk> </home/student/.texmf-var/fonts
 /pk/ljfour/jknappen/ec/ecso2074.600pk> </home/student/.texmf-var/fonts/pk/ljfou
 r/jknappen/ec/ecsx2074.600pk>
-Output written on dokumentasjon.pdf (2 pages, 38535 bytes).
+Output written on dokumentasjon.pdf (2 pages, 38587 bytes).
 PDF statistics:
  104 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)

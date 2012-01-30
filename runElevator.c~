@@ -1,46 +1,52 @@
 // This is the main loop
 
 #include "elev.h"
+#include "state_machine.h"
+#include "runElevator.h"
 #include <stdio.h>
+#include <unistd.h>
 
-void heisann_init();
+state_t current_state; 
 
-void runElevator(){
+void run_elevator(){
+  
+  
+  // Elevator is started and state is unknown.
 
-  //elev_set_speed(0);
-  heisann_init();
-
-    /* while (1) { */
-    /*     // Check if ground floor, if so, turn upwards. */
-    /*     if (elev_get_floor_sensor_signal() == 0) */
-    /*         elev_set_speed(100); */
-
-    /*     // Check if upper floor, if so, turn downwards. */
-    /*     else if (elev_get_floor_sensor_signal() == N_FLOORS-1) */
-    /*         elev_set_speed(-300); */
-
-    /*     // Check if stop button, if so, stop elevator and exit program. */
-    /*     if (elev_get_stop_signal()) { */
-    /*         elev_set_speed(0); */
-    /*         break; */
-    /*     } */
-    /* } */
-
+  current_state = UNDEF; 
+  elev_first_init();
+  
+  // Elevator is now at some floor.
   while(1){
+    //break; // ** EXIT AT ONCE ** (Comment out to disable)
+    current_state = (enum) state_machine((int) current_state); // TO DO: Fix this. This is not pretty... Possible fix: move current_state to the header file.
     if (elev_get_stop_signal()) {
       elev_set_speed(0);
       break;
     }
   }
-} // End runElevator()
+}
 
 
-void heisann_init(){
-  //getSignals();
-  
+void initialize_elevator(){  
   elev_set_speed(-300);
-  while (elev_get_floor_sensor_signal() != 0)
-    // DO NOTHING
+  current_state = DOWN;
+  while (elev_get_floor_sensor_signal() == -1)
+    // WAIT UNTIL FIRST FLOOR IS REACHED
     ;
-  elev_set_speed(0);
+  stop_elev();
+  current_state = AT_FLOOR; // Current state is now AT_FLOOR
+}
+
+void stop_elev(){
+  if (current_state == UP) {
+    elev_set_speed(-300);
+    usleep(5000);
+    elev_set_speed(0);
+  } 
+  if (current_state == DOWN) {
+    elev_set_speed(300);
+    usleep(5000);
+    elev_set_speed(0);
+  }
 }

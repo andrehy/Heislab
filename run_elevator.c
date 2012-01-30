@@ -2,11 +2,9 @@
 
 #include "elev.h"
 #include "state_machine.h"
-#include "runElevator.h"
+#include "run_elevator.h"
 #include <stdio.h>
 #include <unistd.h>
-
-state_t current_state; 
 
 void run_elevator(){
   
@@ -14,21 +12,17 @@ void run_elevator(){
   // Elevator is started and state is unknown.
 
   current_state = UNDEF; 
-  elev_first_init();
+  initialize_elevator();
   
   // Elevator is now at some floor.
   while(1){
     //break; // ** EXIT AT ONCE ** (Comment out to disable)
-<<<<<<< HEAD
-    current_state = (enum) state_machine((int) current_state); // TO DO: Fix this. This is not pretty... Possible fix: move current_state to the header file.
-=======
-    // state_machine(&a);
->>>>>>> New update
+    state_machine(); // TO DO: Fix this. This is not pretty... Possible fix: move current_state to the header file.
     if (elev_get_stop_signal()) {
       elev_set_speed(0);
       break;
     }
-  } // END MAIN LOOP
+  }
 }
 
 
@@ -39,7 +33,7 @@ void initialize_elevator(){
     // WAIT UNTIL FIRST FLOOR IS REACHED
     ;
   stop_elev();
-  current_state = AT_FLOOR; // Current state is now AT_FLOOR
+  current_state = STOP; // Current state is now AT_FLOOR
 }
 
 void stop_elev(){

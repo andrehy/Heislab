@@ -5,7 +5,7 @@ CFLAGS = -g -Wall -O2 -I . -MMD -std=gnu99
 LDFLAGS = -lm -lpthread -lcomedi -g
 
 # list of sources
-ELEVSRC = elev.c io.c main.c runElevator.c state_machine.c
+ELEVSRC = elev.c io.c main.c run_elevator.c state_machine.c
 
 # program executable file name.
 TARGET = heis

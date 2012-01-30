@@ -2,7 +2,7 @@
 // READ ELEV.H FOR INFORMATION ON HOW TO USE THE ELEVATOR FUNCTIONS.
 
 #include "elev.h"
-#include "runElevator.h"
+#include "run_elevator.h"
 #include <stdio.h>
 
 

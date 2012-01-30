@@ -1,1 +1,1 @@
-main.o: main.c elev.h runElevator.h
+main.o: main.c elev.h run_elevator.h

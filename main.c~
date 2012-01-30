@@ -16,7 +16,7 @@ int main()
     
     printf("Press STOP button to stop elevator and exit program.\n");
 
-    runElevator(); // LET THE SHIT BEGIN!!!!11oneone!!
+    run_elevator(); // LET THE SHIT BEGIN!!!!11oneone!!
     
     return 0;
 }
