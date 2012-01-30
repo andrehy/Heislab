@@ -11,7 +11,7 @@
 int state_machine(int state){
   switch (state) {
     case 0: // UP
-      // DO SOMETHING
+      // DO SOMETHING test
       break;
     case 1: // DOWN
       // DO SOMETHING
