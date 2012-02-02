@@ -142,8 +142,8 @@ void state_stop_u(){
     if  (order_list[current_floor] != 0)
       update_timer();
     
-    // When timer is updated: clear orders in current floor.
-    order_list[current_floor] = 0;
+          // After timer is updated: clear orders in current floor.
+        order_list[current_floor] = 0;
   }
   
   // When timer is expired. Continue upwards.
