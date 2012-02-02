@@ -1,4 +1,6 @@
 /*
+  state_machine.c
+  
   Andreas Hystad & Thomas Stenersen (c) 2012
   
   This is the state machine for the elevator. All input and orders should be
@@ -138,15 +140,15 @@ void state_stop_u(){
   // Should not need to test this, but just to be sure...
   if (current_floor != -1) {
     
-    // If internal or external button(s) are pressed: update timer.
+    // If the internal or external button(s) are pressed: update timer.
     if  (order_list[current_floor] != 0)
       update_timer();
     
-          // After timer is updated: clear orders in current floor.
-        order_list[current_floor] = 0;
+    // After timer is updated: clear orders in current floor.
+    order_list[current_floor] = 0;
   }
   
-  // When timer is expired. Continue upwards.
+  // After timer is expired. Continue upwards.
   if (clock()>timer){
     elev_set_speed(300);
     current_state = UP;
@@ -163,86 +165,83 @@ void state_stop_d(){
   // Should not need to test this, but just to be sure...
   if (current_floor != -1) {
     
-    // If internal or external button(s) are pressed: update timer.
+    // If the internal or external button(s) are pressed: update timer.
     if  (order_list[current_floor] != 0)
       update_timer();
     
-    // When timer is updated: clear orders in current floor.
+    // After timer is updated: clear orders in current floor.
     order_list[current_floor] = 0;
   }
   
-  // When timer is expired. Continue downwards.
+  // After timer is expired. Continue downwards.
   if (clock()>timer){
     elev_set_speed(-300);
     current_state = DOWN;
   }
 }
 
+/*
+  This function is called during state == STOP. It handles all possible scenarios during this state.
+*/
 void state_stop(){
   
   int current_floor = elev_get_floor_sensor_signal();
   
-  
-  
-  if (current_floor != -1) { // Need to test this if state is STOP
-    if  (order_list[current_floor] != 0)
+  // Should not need to test this, but just to be sure...
+  if (current_floor != -1) {
+    
+    // If the internal or external button(s) are pressed: update timer.
+    if (order_list[current_floor] != 0)
       update_timer();
     
+    // After timer is updated: clear orders in current floor.
     order_list[current_floor] = 0;
   }
   
+  // After timer is expired. Search for new orders.
   if (clock()>timer){
     
-  
     for (int i=0;i<N_FLOORS;i++){
       if (order_list[i] != 0) {
 	
+	// If the order is below the current floor: next state = DOWN.
 	if (i<current_floor) {
 	  elev_set_speed(-300);
 	  current_state = DOWN;
 	}
-      
+
+	// If the order is above the current floor: next state = UP.
 	if (i>current_floor) {
 	  elev_set_speed(300);
 	  current_state = UP;
 	}
-      }
-    }
-  }
-  
+      } // End if
+    } // End for
+  } // End if
 }
 
-void state_emergency(state_t prev_state){
+/*
+  This function is called during state == EMERGENCY. It handles all possible scenarios during this state.
+  
+  To get out of this state, someone has to press one of the internal floor buttons. The elevator will then
+  be reinitialized.
+*/
+void state_emergency(){
+  
+  // Stop the elevator.
   elev_set_speed(0);
-  
-  //int i_wantz_outz = 0;
-  // Delete all orders
-  
+
   io_clear_all_lights();
   
   clear_all_orders();
 
-  // Get and set internal shait
+  // Check if someone presses one of the internal floor buttons.
   for (int i=0;i<N_FLOORS;i++){
     if (elev_get_button_signal(BUTTON_COMMAND,i)){
       elev_set_button_lamp(BUTTON_COMMAND, i, 1);
-      // order_list[i]=2;
-      //i_wantz_outz = 1;
       current_state = UNDEF;
     }
-  }
-  /*
-  if (i_wantz_outz) {
-    
-    current_state = UNDEF;
-    
-    elev_set_speed(300);
-    while (elev_get_floor_sensor_signal() == -1)
-      ; // DO NOTHING
-    current_state = STOP;
-    
-  }
-  */
+  } 
 }
 
 void clear_all_orders(){
@@ -250,18 +249,27 @@ void clear_all_orders(){
     order_list[i]=0;
 }
 
+/*
+  This function searches for orders above or below the current floor. This is to optimize the order handling.
+*/
 int other_orders(int current_floor){
   switch (current_state) {
     case UP:
+      // Search through the orders for the floors above the current.
       for (int i=current_floor+1;i<N_FLOORS;i++){
-	if (order_list[i] != 0) // If orders above current floor is present - goto STOP_U
+	
+	// If there are orders above the current floor return 1 (TRUE).
+	If (order_list[i] != 0)
 	  return 1;
       }
       
       break;
     case DOWN:
+      // Search through the orders for the floors above the current.
       for (int i=current_floor-1;i>=0;i--) {
-	if (order_list[i] != 0) // If orders below current floor is present - goto STOP_D
+	
+	// If there are orders below the current floor return 1 (TRUE).
+	if (order_list[i] != 0)
 	  return 1;
       }
       break;

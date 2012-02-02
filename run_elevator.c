@@ -1,4 +1,11 @@
-// This is the main loop
+/*
+  run_elevator.c
+
+  Andreas Hystad & Thomas Stenersen (c) 2012
+  
+  This is the main function in the elevator program. It contains the main program loop.
+
+ */
 
 #include "elev.h"
 #include "state_machine.h"
@@ -9,27 +16,30 @@
 
 void run_elevator(){
   
-  
   // Elevator is started and state is unknown.
   
+  // Initialize timer.
   timer = clock();
   
   current_state = UNDEF; 
   initialize_elevator();
   
-  
-  // Elevator is now at some floor.
+  // Elevator is now at some floor and ready for orders.
   while(1){
-    io_signals(); // Handles io-signals, (sets/clears lights etc.)
-    state_machine(); 
+    
+    // Handles io-signals, (sets/clears lights etc.)
+    io_signals();
+    
+    // Calls the state machine switch function.
+    state_machine();
+    
+    // If ... exit the main loop and terminate the program.
     if (elev_get_button_signal(BUTTON_CALL_UP,0) && current_state == EMERGENCY){
       elev_set_speed(0);
       break;
     }
   }
-  
-  io_clear_all_lights();
-  
+
   initialize_elevator();
 }
 
@@ -42,8 +52,8 @@ void initialize_elevator(){
   io_clear_all_lights();
   
   while (elev_get_floor_sensor_signal() == -1)
-    // WAIT UNTIL FIRST FLOOR IS REACHED
-    ;
+    ; // Wait until first floor is reached. 
+
   stop_elev();
   
   clear_all_orders();
