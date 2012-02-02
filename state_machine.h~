@@ -13,6 +13,6 @@ void state_stop_d();
 void state_stop();
 void state_emergency();
 
-int other_orders();
+int other_orders(int current_floor);
 
 #endif

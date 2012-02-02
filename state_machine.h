@@ -1,9 +1,6 @@
 #ifndef _STATE_MACHINE_
 #define _STATE_MACHINE_
 
-<<<<<<< HEAD
-int state_machine(int);
-=======
 void state_machine();
 
 /*
@@ -16,7 +13,7 @@ void state_stop_d();
 void state_stop();
 void state_emergency();
 
+void clear_all_orders();
 int other_orders(int current_floor);
->>>>>>> New update
 
 #endif
